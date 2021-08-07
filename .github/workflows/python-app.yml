@@ -32,11 +32,16 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Test with pytest
       run: |
-        pytest --html=pytest_report.html
+        pytest --html=pytest_report.html --doctest-modules --junitxml=result.xml
     - name: Upload pytest test results
       if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: pytest-results
         path: pytest_report.html
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: ${{ always() }}
+      with:
+        files: result.xml.xml
 
