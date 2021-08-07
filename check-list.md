@@ -1,5 +1,5 @@
 # API checklist
-* Корректность структуры данных
+*Response's status codes are checked in all tests
 * [POST requests](./tests/test_post.py)
   * All fields are valid
   * Invalid bear's types
