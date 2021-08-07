@@ -13,6 +13,11 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    services:
+      bears:
+        image: azshoo/alaska:1.0
+        ports:
+          - 8882:8091
 
     steps:
     - uses: actions/checkout@v2
