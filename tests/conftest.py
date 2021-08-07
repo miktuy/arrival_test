@@ -26,11 +26,6 @@ def cleanup():
     _clean_data()
 
 
-# @pytest.fixture
-# def setup():
-#     _clean_data()
-
-
 @pytest.fixture
 def create_test_bear():
     return bears_api.create_bear(FIRST_VALID_BEAR).json()

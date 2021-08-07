@@ -1,6 +1,5 @@
 from http import HTTPStatus
-from tests.conftest import FIRST_VALID_BEAR
-from tests.testdata import SECOND_VALID_BEAR
+from tests.testdata import FIRST_VALID_BEAR, SECOND_VALID_BEAR
 
 
 def check_bear(expected_bear: dict, bear: dict):
@@ -37,3 +36,18 @@ class TestGetApi:
         data = response.json()
         assert data['bear_id'] == id_
         check_bear(expected_bear=SECOND_VALID_BEAR, bear=data)
+
+    def test_get_bear_by_not_exists_id(self, api, create_test_bear):
+        id_ = create_test_bear
+        response = api.get_bear(id_ + 1)
+        assert response.status_code == HTTPStatus.OK
+        assert response.text == "EMPTY"
+
+    def test_get_bear_without_id(self, api):
+        response = api.get_bear('')
+        assert response.status_code == HTTPStatus.NOT_FOUND
+
+    def test_get_bear_by_invalid_id(self, api):
+        response = api.get_bear('ONE_HUNDRED_PERCENT_THIS_IS_NOT_ID')
+        assert response.status_code == HTTPStatus.OK
+        assert response.text == "EMPTY"

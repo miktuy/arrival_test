@@ -23,17 +23,17 @@ class Bears:
     def get_all_bears(self) -> Response:
         return get(url=self.bears_url)
 
-    def get_bear(self, id_: int) -> Response:
+    def get_bear(self, id_: str) -> Response:
         return get(url=f"{self.bears_url}/{id_}")
 
-    def update_bear(self, id_: int, data: dict) -> Response:
+    def update_bear(self, id_: str, data: dict) -> Response:
         return put(url=f"{self.bears_url}/{id_}", data=json.dumps(data))
 
     def delete_all_bears(self) -> Response:
         return delete(url=self.bears_url)
 
-    def delete_bear(self, id_: int) -> Response:
-        return get(url=f"{self.bears_url}/{id_}")
+    def delete_bear(self, id_: str) -> Response:
+        return delete(url=f"{self.bears_url}/{id_}")
 
     def create_bear(self, data: dict) -> Response:
         return post(url=self.bears_url, data=json.dumps(data))
