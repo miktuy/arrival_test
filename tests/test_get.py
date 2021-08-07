@@ -1,29 +1,39 @@
 from http import HTTPStatus
-from tests.conftest import BaseTest, FIRST_VALID_BEAR
+from tests.conftest import FIRST_VALID_BEAR
+from tests.testdata import SECOND_VALID_BEAR
 
 
-class TestGetApi(BaseTest):
-    def test_get_all_bears_when_bears_not_exist(self, setup):
-        api = setup
+def check_bear(expected_bear: dict, bear: dict):
+    assert bear['bear_type'] == expected_bear['bear_type']
+    assert bear['bear_name'] == expected_bear['bear_name']
+    assert bear['bear_age'] == expected_bear['bear_age']
+
+
+class TestGetApi:
+    def test_get_all_bears_when_bears_not_exist(self, api):
         response = api.get_all_bears()
         assert response.status_code == HTTPStatus.OK
         assert len(response.json()) == 0
 
     def test_get_all_bears_when_one_exists(
-        self, setup, create_test_bear
+        self, api, create_test_bear
     ):
-        api = setup
         response = api.get_all_bears()
         assert response.status_code == HTTPStatus.OK
-        assert len(response.json()) == 1
         data = response.json()[0]
-        # assert data['bear_id'] == 1  TODO: delete doesn't reset `id` to 0
-        assert data['bear_type'] == FIRST_VALID_BEAR['bear_type']
-        assert data['bear_name'] == FIRST_VALID_BEAR['bear_name']
-        assert data['bear_age'] == FIRST_VALID_BEAR['bear_age']
+        check_bear(expected_bear=FIRST_VALID_BEAR, bear=data)
 
-    def test_get_all_bears_when_several_exist(self, setup, create_several_bears):
-        api = setup
+    def test_get_all_bears_when_several_exist(self, api, create_several_bears):
         response = api.get_all_bears()
         assert response.status_code == HTTPStatus.OK
         assert len(response.json()) == 2
+        check_bear(FIRST_VALID_BEAR, response.json()[0])
+        check_bear(SECOND_VALID_BEAR, response.json()[1])
+
+    def test_get_bear_by_id(self, api, create_several_bears):
+        id_ = create_several_bears[1]
+        response = api.get_bear(id_)
+        assert response.status_code == HTTPStatus.OK
+        data = response.json()
+        assert data['bear_id'] == id_
+        check_bear(expected_bear=SECOND_VALID_BEAR, bear=data)

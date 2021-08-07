@@ -1,8 +1,4 @@
-import json
-
 import pytest
-
-from tests.conftest import clean_data, bears
 
 
 available_types = ['POLAR', 'BROWN', 'BLACK', 'GUMMY']
