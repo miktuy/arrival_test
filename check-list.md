@@ -4,7 +4,7 @@
   * All fields are valid
   * Invalid bear's types
   * Invalid bear's names
-  * Invalid bear's ages
+  * Invalid bear's ages 
 * [GET requests](./tests/test_get.py)
   * Get empty bear's list
   * Get bear's list with one bear
