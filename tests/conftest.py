@@ -5,7 +5,6 @@ from tests.testdata import FIRST_VALID_BEAR, SECOND_VALID_BEAR
 from variables import APP_HOST, APP_PORT
 
 
-# class BaseTest:
 bears_api = Bears(host=APP_HOST, port=APP_PORT)
 
 
