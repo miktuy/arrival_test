@@ -1,11 +1,7 @@
 from http import HTTPStatus
+
+from tests.misc import check_bear
 from tests.testdata import FIRST_VALID_BEAR, SECOND_VALID_BEAR
-
-
-def check_bear(expected_bear: dict, bear: dict):
-    assert bear['bear_type'] == expected_bear['bear_type']
-    assert bear['bear_name'] == expected_bear['bear_name']
-    assert bear['bear_age'] == expected_bear['bear_age']
 
 
 class TestGetApi:
@@ -14,9 +10,7 @@ class TestGetApi:
         assert response.status_code == HTTPStatus.OK
         assert len(response.json()) == 0
 
-    def test_get_all_bears_when_one_exists(
-        self, api, create_test_bear
-    ):
+    def test_get_all_bears_when_one_exists(self, api, create_test_bear):
         response = api.get_all_bears()
         assert response.status_code == HTTPStatus.OK
         data = response.json()[0]
@@ -34,7 +28,7 @@ class TestGetApi:
         response = api.get_bear(id_)
         assert response.status_code == HTTPStatus.OK
         data = response.json()
-        assert data['bear_id'] == id_
+        assert data["bear_id"] == id_
         check_bear(expected_bear=SECOND_VALID_BEAR, bear=data)
 
     def test_get_bear_by_not_exists_id(self, api, create_test_bear):
@@ -44,10 +38,10 @@ class TestGetApi:
         assert response.text == "EMPTY"
 
     def test_get_bear_without_id(self, api):
-        response = api.get_bear('')
+        response = api.get_bear("")
         assert response.status_code == HTTPStatus.NOT_FOUND
 
     def test_get_bear_by_invalid_id(self, api):
-        response = api.get_bear('ONE_HUNDRED_PERCENT_THIS_IS_NOT_ID')
+        response = api.get_bear("ONE_HUNDRED_PERCENT_THIS_IS_NOT_ID")
         assert response.status_code == HTTPStatus.OK
         assert response.text == "EMPTY"
