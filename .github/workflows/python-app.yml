@@ -34,6 +34,7 @@ jobs:
       run: |
         pytest --html=pytest_report.html
     - name: Upload pytest test results
+      if: ${{ always() }}
       uses: actions/upload-artifact@v2
       with:
         name: pytest-results
